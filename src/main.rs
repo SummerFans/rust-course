@@ -167,7 +167,7 @@ fn main() {
     fn plus_one(x: Option<i32>) -> Option<i32> {
         match x {
             Some(i) => Some(i + 1),
-            None => None,   // ! > 必须穷尽所有的可能
+            None => None, // ! > 必须穷尽所有的可能
         }
     }
 
@@ -188,4 +188,46 @@ fn main() {
     if let Some(10) = Some(v) {
         println!("ten");
     }
+
+    println!("------[循环语句]------------------------");
+    /*
+     * loop是无限循环使用 break 停止循环，
+     */
+    let mut counter = 0;
+    let result = loop {
+        counter += 1;
+
+        if counter == 10 {
+            break counter * 2; // 递增到10 时 乘上 2
+        }
+    };
+    println!("{}", result);
+
+    /*
+     * while 条件循环，每次循环前都判断一次条件  🟡 效率低，不建议
+     */
+    let mut numbes = 3;
+    while numbes != 0 {
+        println!("{}!", numbes);
+
+        numbes -= 1;
+    }
+
+    println!("LIFTOFF!!!");
+
+    /*
+     * for 循环  🟢 建议使用 安全简洁，效率高
+     */
+    let for_data = [10, 20, 30, 40, 50];
+    for d in for_data.iter() {
+        println!("the value is: {}", d);
+    }
+
+    /*
+     * for Range 
+     */
+    for num in (1..5).rev() {
+        println!("range {}", num);
+    }
+    
 }
