@@ -47,4 +47,23 @@ fn main() {
         println!("is connect");
     }
 
+    
+    // TODO Option 枚举
+    /*
+     *  1.Rust中没有NUll概念，只有Option<T>枚举
+     *  2.Option<T>于T不同，如果想对Option<T>于T操作，必须先从Option<T>中取出，然后在与T操作，解决系统常见“NUll+T”操作的错误
+     *  enum Option<T>{
+     *      Some(T),
+     *      None,
+     *  }
+     * 
+     */
+    let some_number = Some(5);
+    let some_string = Some("A string");
+
+    let absent_number: Option<i32> = None;
+    println!("{:?}", some_number);
+    println!("{:?}", some_string);
+    println!("{:?}", absent_number);
+    
 }
