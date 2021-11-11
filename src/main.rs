@@ -1,8 +1,8 @@
 /***********************
  *  泛型(generic)，特性(trait)  生命周期
  ***********************/
-use std::fmt::Display;
 use std::cmp::PartialOrd;
+use std::fmt::Display;
 
 fn main() {
     // ! 重复代码
@@ -240,7 +240,6 @@ fn main() {
         largest
     }
 
-
     // TODO 有条件实现 trait
 
     struct Pair<T> {
@@ -250,15 +249,15 @@ fn main() {
 
     // 所有Pair都默认实现new函数
     impl<T> Pair<T> {
-        fn new(x: T, y: T) -> Self{
-            Self{x, y}
+        fn new(x: T, y: T) -> Self {
+            Self { x, y }
         }
     }
 
     // 所有 T 包含 Display + PartialOrd都可以访问 cmp_display 函数
     impl<T> Pair<T>
-        where
-            T: Display + PartialOrd
+    where
+        T: Display + PartialOrd,
     {
         fn cmp_display(&self) {
             if self.x >= self.y {
@@ -276,9 +275,6 @@ fn main() {
      */
 
     println!("Hello, world!");
-
-
-
 
     /***************
      *  生命周期    *
@@ -303,41 +299,64 @@ fn main() {
     }
 
     // ! fn longest2<'a>(x: &'a str, y: &str) -> &'a str{
-    fn longest2<'a>(x: &'a str, y: &str) -> String{
+    fn longest2<'a>(x: &'a str, y: &str) -> String {
         let result = String::from("abc");
         // ! result.as_str()
         result
     }
 
-    let string1  = String::from("abcd");
+    let string1 = String::from("abcd");
     let string2 = "xyz";
     let result = longest2(string1.as_str(), string2);
     println!("The longest string is {}", result);
-
-
 
     struct ImportantExcerpt<'a> {
         part: &'a str,
     }
 
     let novel = String::from("Call me Ishmael. Some years age..");
-    let first_sentence = novel.split(".")
-        .next()
-        .expect("Could not found a '.'");
+    let first_sentence = novel.split(".").next().expect("Could not found a '.'");
 
-    let i = ImportantExcerpt{
-        part:first_sentence,
+    let i = ImportantExcerpt {
+        part: first_sentence,
     };
 
     // 生命周期的省略,编译器对可忽略的生命周期进行省略
     fn first_word<'a>(s: &'a str) -> &'a str {
         let bytes = s.as_bytes();
-        for(i, &item) in bytes.iter().enumerate() {
+        for (i, &item) in bytes.iter().enumerate() {
             if item == b' ' {
-                return &s[..]
+                return &s[..];
             }
         }
         &s[..]
     }
 
+    // 方法定义中的生命周期。
+    struct ImportantExcerpt2<'a> {
+        part: &'a str,
+    }
+    impl<'a> ImportantExcerpt2<'a> {
+        fn level(&self) -> i32 {
+            3
+        }
+        fn announce_and_return_part(&self, announcement: &str) -> &str {
+            self.part
+        }
+    }
+
+    // 静态声明周期
+    let s: &'static str = "i have a static lifetime";
+
+    fn longest_with_an_announcement<'a, T>(x: &'a str, y: &'a str, ann: T) -> &'a str
+    where
+        T: Display,
+    {
+        println!("Announcement! {}", ann);
+        if x.len() > y.len() {
+            x
+        } else {
+            y
+        }
+    }
 }
