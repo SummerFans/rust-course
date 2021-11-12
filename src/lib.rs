@@ -1,3 +1,4 @@
+
 /***************************
  *         单元测试         *
  **************************/
@@ -26,8 +27,8 @@
 
 #[derive(Debug)]
 pub struct Rectangle {
-    length: u32,
-    width: u32,
+    pub length: u32,
+    pub width: u32,
 }
 
 impl Rectangle {
@@ -141,6 +142,36 @@ mod tests {
      * 专注单一模块测试粒度最小，可以对隔离（privale）的模块进行测试
      * 一般都把单元测试和测试的代码放同个文件中，用 #[cfg(test)] 来区分单元测试和普通代码
      * #[cfg(test)] 部分只有cargo test才能执行 cargo build 不会执行
+     * 如果方法上面不写#[test]将无法执行测试
      */
 
+
+     // todo TDD 测试驱动开发
+    /*
+     * 
+     */
+    #[test]
+    fn one_result(){
+        let query = "duct";
+        let contents = "\
+        Rust:
+        safe, fast, productive.
+        Pick three.";
+        // ? [1] 先写测试用例，传入参数预期获得参数
+        assert_eq!(vec!["safe, fast, productive."], search_text(query, contents));
+    }
+     
+}
+
+// ? [2] 第二开发具体方法
+pub fn search_text<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
+    println!("{}, {}", query, contents);
+    
+    let mut result = Vec::new();
+    for line in  contents.lines() {
+        if line.contains(query) {
+            result.push(line.trim());
+        }
+    }
+    result
 }
